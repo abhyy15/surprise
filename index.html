@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Go Out With Me?</title>
+  <!-- Pixel Art Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    /* Global Reset & Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Press Start 2P', cursive;
+      user-select: none;
+    }
+
+    body {
+      background: #ffb7c5;
+      background-image: 
+        radial-gradient(#ff69b4 15%, transparent 16%),
+        radial-gradient(#ff69b4 15%, transparent 16%);
+      background-size: 60px 60px;
+      background-position: 0 0, 30px 30px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Outer Card Box */
+    .card {
+      background: #fff0f5;
+      border: 6px solid #d81b60;
+      box-shadow: 8px 8px 0px #880e4f;
+      border-radius: 20px;
+      padding: 30px 20px;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Pixel Art Image Frame */
+    .img-frame {
+      border: 4px solid #d81b60;
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px;
+      display: inline-block;
+      margin-bottom: 20px;
+      box-shadow: 4px 4px 0px #880e4f;
+    }
+
+    .img-frame img {
+      max-width: 150px;
+      height: 150px;
+      object-fit: contain;
+      display: block;
+    }
+
+    h1 {
+      color: #d81b60;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      text-shadow: 2px 2px 0px #ffc1e3;
+    }
+
+    p.subtitle {
+      color: #880e4f;
+      font-size: 0.65rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Retro Buttons */
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .btn {
+      background: #e91e63;
+      color: white;
+      border: 4px solid #880e4f;
+      box-shadow: 4px 4px 0px #880e4f;
+      padding: 12px 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: font-size 0.2s ease, padding 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #880e4f;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #d81b60;
+      border: 4px solid #d81b60;
+      box-shadow: 4px 4px 0px #d81b60;
+    }
+
+    .sub-msg {
+      font-size: 0.55rem;
+      color: #880e4f;
+      margin-top: 15px;
+      min-height: 20px;
+    }
+
+    /* Custom Form Inputs */
+    input[type="date"] {
+      padding: 12px;
+      font-size: 0.7rem;
+      border: 4px solid #d81b60;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+      color: #d81b60;
+      margin-bottom: 20px;
+      width: 80%;
+      text-align: center;
+    }
+
+    /* Activity Choice Grid */
+    .activity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .act-btn {
+      background: #fff;
+      color: #d81b60;
+      border: 3px solid #d81b60;
+      border-radius: 8px;
+      padding: 12px 8px;
+      font-size: 0.55rem;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #d81b60;
+      line-height: 1.4;
+    }
+
+    .act-btn.selected {
+      background: #d81b60;
+      color: #fff;
+      box-shadow: 3px 3px 0px #880e4f;
+    }
+
+    /* Summary Window */
+    .details-box {
+      background: #fff;
+      border: 3px dashed #d81b60;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 0.6rem;
+      color: #880e4f;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    /* Notification Badge & Love Note Modal */
+    .notify-btn {
+      position: absolute;
+      top: -20px;
+      right: 10px;
+      background: #ff4081;
+      color: white;
+      font-size: 0.5rem;
+      padding: 8px 12px;
+      border: 3px solid #880e4f;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #880e4f;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      background: #fff;
+      border: 4px solid #d81b60;
+      border-radius: 10px;
+      box-shadow: 6px 6px 0px #880e4f;
+      padding: 15px;
+      z-index: 100;
+      text-align: left;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ffb7c5;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      font-size: 0.55rem;
+      color: #d81b60;
+    }
+
+    .close-btn {
+      cursor: pointer;
+      background: #d81b60;
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.5rem;
+    }
+
+    .modal-body {
+      font-size: 0.55rem;
+      color: #555;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CARD CONTAINER -->
+  <div class="card">
+
+    <!-- VIEW 1: PROPOSAL -->
+    <div id="view1">
+      <div class="img-frame">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHRsbmtsaHR1NTRsdDF1OHYydHR0YWFjcWZjcndmbTZxd3p3OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/c3Q2EdrCzhFAQL6f84/giphy.gif" alt="Cute Cat">
+      </div>
+      <h1>Will you go out with me?</h1>
+      <div class="btn-group">
+        <button id="yesBtn" class="btn" onclick="goToView(2)">YES+</button>
+        <button id="noBtn" class="btn btn-secondary" onclick="handleNoClick()">No</button>
+      </div>
+      <div id="subMsg" class="sub-msg"></div>
+    </div>
+
+    <!-- VIEW 2: YAY ACCEPTANCE -->
+    <div id="view2" class="hidden">
+      <div class="img-frame">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmFhOWp6OTVsb3FlczM4ZWxveXZxYmJ1OHI4Nm4zaGNldnlua3k4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Cute Hug">
+      </div>
+      <h1>YAY!</h1>
+      <p class="subtitle">I'm so glad u said yes.</p>
+      <button class="btn" onclick="goToView(3)">PRESS TO CONTINUE -></button>
+    </div>
+
+    <!-- VIEW 3: DATE PICKER -->
+    <div id="view3" class="hidden">
+      <div class="img-frame">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHRsbmtsaHR1NTRsdDF1OHYydHR0YWFjcWZjcndmbTZxd3p3OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/c3Q2EdrCzhFAQL6f84/giphy.gif" alt="Thinking Cat">
+      </div>
+      <h1>PICK A DATE</h1>
+      <p class="subtitle">Choose the day for our cute little plan:</p>
+      <input type="date" id="dateInput">
+      <br>
+      <button class="btn" onclick="submitDate()">CONTINUE -></button>
+    </div>
+
+    <!-- VIEW 4: ACTIVITY SELECTOR -->
+    <div id="view4" class="hidden">
+      <div class="img-frame">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTV2eXRueGN6eHZxcWd4MXpudDF1bHZhbmt2aDV0aWF0czZ3aGppdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/MDJ9IbxxvDUQM/giphy.gif" alt="Excited Cat">
+      </div>
+      <h1>WHAT WOULD YOU LIKE TO DO?</h1>
+      <div class="activity-grid">
+        <button class="act-btn" onclick="selectActivity(this, 'DINNER DATE')">DINNER DATE</button>
+        <button class="act-btn" onclick="selectActivity(this, 'MOVIE NIGHT')">MOVIE NIGHT</button>
+        <button class="act-btn" onclick="selectActivity(this, 'COFFEE & WALK')">COFFEE & WALK</button>
+        <button class="act-btn" onclick="selectActivity(this, 'PICNIC')">PICNIC</button>
+        <button class="act-btn" onclick="selectActivity(this, 'MINI GOLF')">MINI GOLF</button>
+        <button class="act-btn" onclick="selectActivity(this, 'SURPRISE ME')">SURPRISE ME</button>
+      </div>
+      <button class="btn" onclick="submitActivity()">LOCK IT IN -></button>
+    </div>
+
+    <!-- VIEW 5: FINAL CONFIRMATION -->
+    <div id="view5" class="hidden">
+      <button class="notify-btn" onclick="toggleModal(true)">✉ 1 NEW MESSAGE</button>
+      
+      <div class="img-frame">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmFhOWp6OTVsb3FlczM4ZWxveXZxYmJ1OHI4Nm4zaGNldnlua3k4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Celebration">
+      </div>
+      <h1>IT'S A DATE!</h1>
+      
+      <div class="details-box">
+        <p><strong>DATE:</strong> <span id="summaryDate">-</span></p>
+        <p><strong>ACTIVITY:</strong> <span id="summaryActivity">-</span></p>
+      </div>
+    </div>
+
+    <!-- LOVE NOTE POPUP MODAL -->
+    <div id="noteModal" class="modal hidden">
+      <div class="modal-header">
+        <span>💌 love_note.txt</span>
+        <button class="close-btn" onclick="toggleModal(false)">X</button>
+      </div>
+      <div class="modal-body">
+you're really cute no matter what. don't let anyone tell you any different, okay?
+
+you make every ordinary day feel special.
+
+today and every day, I celebrate you and us.
+
+xoxo
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // State Variables
+    let noClickCount = 0;
+    let selectedDate = '';
+    let selectedActivity = 'SURPRISE ME';
+
+    const guiltMessages = [
+      "Are you sure?",
+      "Better say yes!",
+      "Babe please :(",
+      "Don't do this...",
+      "I'm gonna cry...",
+      "Heart broken <3"
+    ];
+
+    // Navigation Switcher
+    function goToView(viewNum) {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`view${i}`).classList.add('hidden');
+      }
+      document.getElementById(`view${viewNum}`).classList.remove('hidden');
+    }
+
+    // Logic for growing "YES" button on "No" click
+    function handleNoClick() {
+      noClickCount++;
+      const yesBtn = document.getElementById('yesBtn');
+      const subMsg = document.getElementById('subMsg');
+
+      // Exponentially scale up padding and font size of YES button
+      const newPaddingVert = 12 + (noClickCount * 6);
+      const newPaddingHoriz = 20 + (noClickCount * 10);
+      const newFontSize = 0.8 + (noClickCount * 0.25);
+
+      yesBtn.style.padding = `${newPaddingVert}px ${newPaddingHoriz}px`;
+      yesBtn.style.fontSize = `${newFontSize}rem`;
+
+      // Update subtitle guilt message
+      const msgIndex = Math.min(noClickCount - 1, guiltMessages.length - 1);
+      subMsg.textContent = guiltMessages[msgIndex];
+    }
+
+    // Capture Date Input
+    function submitDate() {
+      const dateVal = document.getElementById('dateInput').value;
+      if (!dateVal) {
+        alert("Please pick a date!");
+        return;
+      }
+      
+      const dateObj = new Date(dateVal);
+      const options = { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' };
+      selectedDate = dateObj.toLocaleDateString('en-US', options);
+      
+      goToView(4);
+    }
+
+    // Highlight and store selected activity
+    function selectActivity(element, activityName) {
+      document.querySelectorAll('.act-btn').forEach(btn => btn.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedActivity = activityName;
+    }
+
+    // Populate summary view
+    function submitActivity() {
+      document.getElementById('summaryDate').textContent = selectedDate || 'Tomorrow';
+      document.getElementById('summaryActivity').textContent = selectedActivity;
+      goToView(5);
+    }
+
+    // Toggle Love Note Modal
+    function toggleModal(show) {
+      const modal = document.getElementById('noteModal');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
