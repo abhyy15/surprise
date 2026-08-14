@@ -105,7 +105,7 @@
       align-items: center;
       justify-content: center;
       line-height: 1;
-      white-space: nowrap; /* FIX: Prevents arrow from wrapping */
+      white-space: nowrap; 
     }
 
     .btn:active {
@@ -199,8 +199,7 @@
     <!-- VIEW 1: PROPOSAL -->
     <div id="view1">
       <div class="img-frame">
-        <!-- FIX: Updated with a reliable image link -->
-        <img src="https://media1.tenor.com/m/m1ZELH3N5xUAAAAd/cat-cute.gif" alt="Cute Cat">
+        <img src="https://media.tenor.com/aKFaZBrZVQcAAAAi/peach-goma.gif" alt="Cute Cat">
       </div>
       <h1>Will you go out with me?</h1>
       <div class="btn-group">
@@ -213,7 +212,7 @@
     <!-- VIEW 2: YAY ACCEPTANCE -->
     <div id="view2" class="hidden">
       <div class="img-frame">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmFhOWp6OTVsb3FlczM4ZWxveXZxYmJ1OHI4Nm4zaGNldnlua3k4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Cute Hug">
+        <img src="https://media.tenor.com/b-1NbXG3gMQAAAAi/peach-and.gif" alt="Cute Hug">
       </div>
       <h1>YAY!</h1>
       <p class="subtitle">I'm so glad u said yes.</p>
@@ -223,8 +222,7 @@
     <!-- VIEW 3: DATE PICKER -->
     <div id="view3" class="hidden">
       <div class="img-frame">
-        <!-- FIX: Updated image link -->
-        <img src="https://media1.tenor.com/m/7aXhW6P0xXkAAAAd/cat-cute.gif" alt="Thinking Cat">
+        <img src="https://media.tenor.com/VJhn5UDA4A4AAAAi/tkthao219-peach.gif" alt="Thinking Cat">
       </div>
       <h1>PICK A DATE</h1>
       <p class="subtitle">Choose the day for our cute little plan:</p>
@@ -236,7 +234,7 @@
     <!-- VIEW 4: ACTIVITY SELECTOR -->
     <div id="view4" class="hidden">
       <div class="img-frame">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTV2eXRueGN6eHZxcWd4MXpudDF1bHZhbmt2aDV0aWF0czZ3aGppdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/MDJ9IbxxvDUQM/giphy.gif" alt="Excited Cat">
+        <img src="https://media.tenor.com/K1Lg02o8vLQAAAAi/peach-goma.gif" alt="Excited Cat">
       </div>
       <h1>WHAT WOULD YOU LIKE TO DO?</h1>
       <div class="activity-grid">
@@ -253,7 +251,7 @@
     <!-- VIEW 5: ASK FOR NAME (NEW) -->
     <div id="view5" class="hidden">
       <div class="img-frame">
-        <img src="https://media1.tenor.com/m/kziS-aL_T7QAAAAd/shy-cute.gif" alt="Shy Cat">
+        <img src="https://media.tenor.com/6U8Yh06nNHEAAAAi/peach-goma.gif" alt="Shy Cat">
       </div>
       <h1>Wait, I was too nervous and forgot to ask your name! 🥺</h1>
       <input type="text" id="nameInput" placeholder="Your name...">
@@ -264,7 +262,7 @@
     <!-- VIEW 6: FINAL CONFIRMATION -->
     <div id="view6" class="hidden">
       <div class="img-frame">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmFhOWp6OTVsb3FlczM4ZWxveXZxYmJ1OHI4Nm4zaGNldnlua3k4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Celebration">
+        <img src="https://media.tenor.com/39x0Vp7GfOAAAAAi/mochi-cat.gif" alt="Celebration">
       </div>
       <h1>IT'S A DATE!</h1>
       <div class="details-box">
@@ -277,9 +275,8 @@
   </div>
 
   <script>
-    // --- PUT YOUR FORMSPREE URL HERE ---
+    // Your actual Formspree URL is inserted right here!
     const FORMSPREE_URL = "https://formspree.io/f/mjybowqg";
-    // -----------------------------------
 
     let noClickCount = 0;
     let selectedDate = '';
@@ -337,7 +334,6 @@
     }
 
     function submitActivity() {
-      // Go to the name asking view instead of straight to the end
       goToView(5);
     }
 
@@ -349,18 +345,14 @@
       }
       userName = nameVal;
 
-      // Update final screen details
       document.getElementById('summaryName').textContent = userName;
       document.getElementById('summaryDate').textContent = selectedDate;
       document.getElementById('summaryActivity').textContent = selectedActivity;
 
-      // Show a temporary loading state on the button
+      // Disable button to prevent double-clicks, but do NOT change the text
       const btn = event.target;
-      const originalText = btn.innerText;
-      btn.innerText = "SENDING...";
       btn.disabled = true;
 
-      // Send the data to Formspree
       try {
         await fetch(FORMSPREE_URL, {
           method: 'POST',
@@ -378,7 +370,6 @@
         console.error("Email failed to send", error);
       }
 
-      // Go to final screen
       goToView(6);
     }
   </script>
