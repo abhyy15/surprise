@@ -184,6 +184,70 @@
       text-align: left;
     }
 
+    /* Notification Badge & Love Note Modal */
+    .notify-btn {
+      position: absolute;
+      top: -20px;
+      right: 10px;
+      background: #ff4081;
+      color: white;
+      font-size: 0.5rem;
+      padding: 8px 12px;
+      border: 3px solid #880e4f;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #880e4f;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      background: #fff;
+      border: 4px solid #d81b60;
+      border-radius: 10px;
+      box-shadow: 6px 6px 0px #880e4f;
+      padding: 15px;
+      z-index: 100;
+      text-align: left;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ffb7c5;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      font-size: 0.55rem;
+      color: #d81b60;
+    }
+
+    .close-btn {
+      cursor: pointer;
+      background: #d81b60;
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.5rem;
+    }
+
+    .modal-body {
+      font-size: 0.55rem;
+      color: #555;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
     /* Fix for smaller mobile screens */
     @media (max-width: 400px) {
       .btn { font-size: 0.65rem; padding: 10px 15px; }
@@ -199,7 +263,7 @@
     <!-- VIEW 1: PROPOSAL -->
     <div id="view1">
       <div class="img-frame">
-        <img src="https://media.tenor.com/aKFaZBrZVQcAAAAi/peach-goma.gif" alt="Cute Cat">
+        <img src="https://media.giphy.com/media/c3Q2EdrCzhFAQL6f84/giphy.gif" alt="Cute Cat">
       </div>
       <h1>Will you go out with me?</h1>
       <div class="btn-group">
@@ -212,7 +276,7 @@
     <!-- VIEW 2: YAY ACCEPTANCE -->
     <div id="view2" class="hidden">
       <div class="img-frame">
-        <img src="https://media.tenor.com/b-1NbXG3gMQAAAAi/peach-and.gif" alt="Cute Hug">
+        <img src="https://media.giphy.com/media/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Cute Hug">
       </div>
       <h1>YAY!</h1>
       <p class="subtitle">I'm so glad u said yes.</p>
@@ -222,7 +286,7 @@
     <!-- VIEW 3: DATE PICKER -->
     <div id="view3" class="hidden">
       <div class="img-frame">
-        <img src="https://media.tenor.com/VJhn5UDA4A4AAAAi/tkthao219-peach.gif" alt="Thinking Cat">
+        <img src="https://media.giphy.com/media/c3Q2EdrCzhFAQL6f84/giphy.gif" alt="Thinking Cat">
       </div>
       <h1>PICK A DATE</h1>
       <p class="subtitle">Choose the day for our cute little plan:</p>
@@ -234,7 +298,7 @@
     <!-- VIEW 4: ACTIVITY SELECTOR -->
     <div id="view4" class="hidden">
       <div class="img-frame">
-        <img src="https://media.tenor.com/K1Lg02o8vLQAAAAi/peach-goma.gif" alt="Excited Cat">
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Excited Cat">
       </div>
       <h1>WHAT WOULD YOU LIKE TO DO?</h1>
       <div class="activity-grid">
@@ -248,10 +312,10 @@
       <button class="btn" onclick="submitActivity()">NEXT -></button>
     </div>
 
-    <!-- VIEW 5: ASK FOR NAME (NEW) -->
+    <!-- VIEW 5: ASK FOR NAME -->
     <div id="view5" class="hidden">
       <div class="img-frame">
-        <img src="https://media.tenor.com/6U8Yh06nNHEAAAAi/peach-goma.gif" alt="Shy Cat">
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Shy Cat">
       </div>
       <h1>Wait, I was too nervous and forgot to ask your name! 🥺</h1>
       <input type="text" id="nameInput" placeholder="Your name...">
@@ -261,8 +325,10 @@
 
     <!-- VIEW 6: FINAL CONFIRMATION -->
     <div id="view6" class="hidden">
+      <button class="notify-btn" onclick="toggleModal(true)">✉ 1 NEW MESSAGE</button>
+      
       <div class="img-frame">
-        <img src="https://media.tenor.com/39x0Vp7GfOAAAAAi/mochi-cat.gif" alt="Celebration">
+        <img src="https://media.giphy.com/media/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Celebration">
       </div>
       <h1>IT'S A DATE!</h1>
       <div class="details-box">
@@ -272,10 +338,25 @@
       </div>
     </div>
 
+    <!-- LOVE NOTE POPUP MODAL -->
+    <div id="noteModal" class="modal hidden">
+      <div class="modal-header">
+        <span>💌 love_note.txt</span>
+        <button class="close-btn" onclick="toggleModal(false)">X</button>
+      </div>
+      <div class="modal-body">
+you're really cute no matter what. don't let anyone tell you any different, okay?
+
+you make every ordinary day feel special.
+
+today and every day, I celebrate you and us.
+      </div>
+    </div>
+
   </div>
 
   <script>
-    // Your actual Formspree URL is inserted right here!
+    // Formspree URL exactly as requested
     const FORMSPREE_URL = "https://formspree.io/f/mjybowqg";
 
     let noClickCount = 0;
@@ -371,6 +452,15 @@
       }
 
       goToView(6);
+    }
+
+    function toggleModal(show) {
+      const modal = document.getElementById('noteModal');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
     }
   </script>
 </body>
