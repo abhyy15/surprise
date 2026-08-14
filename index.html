@@ -105,6 +105,7 @@
       align-items: center;
       justify-content: center;
       line-height: 1;
+      white-space: nowrap; /* FIX: Prevents arrow from wrapping */
     }
 
     .btn:active {
@@ -127,7 +128,7 @@
     }
 
     /* Custom Form Inputs */
-    input[type="date"] {
+    input[type="date"], input[type="text"] {
       padding: 12px;
       font-size: 0.7rem;
       border: 4px solid #d81b60;
@@ -138,6 +139,10 @@
       margin-bottom: 20px;
       width: 80%;
       text-align: center;
+    }
+
+    input[type="text"]::placeholder {
+      color: #ffb7c5;
     }
 
     /* Activity Choice Grid */
@@ -179,68 +184,10 @@
       text-align: left;
     }
 
-    /* Notification Badge & Love Note Modal */
-    .notify-btn {
-      position: absolute;
-      top: -20px;
-      right: 10px;
-      background: #ff4081;
-      color: white;
-      font-size: 0.5rem;
-      padding: 8px 12px;
-      border: 3px solid #880e4f;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 3px 3px 0px #880e4f;
-      animation: bounce 1.5s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-
-    .modal {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      background: #fff;
-      border: 4px solid #d81b60;
-      border-radius: 10px;
-      box-shadow: 6px 6px 0px #880e4f;
-      padding: 15px;
-      z-index: 100;
-      text-align: left;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #ffb7c5;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-      font-size: 0.55rem;
-      color: #d81b60;
-    }
-
-    .close-btn {
-      cursor: pointer;
-      background: #d81b60;
-      color: white;
-      border: none;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.5rem;
-    }
-
-    .modal-body {
-      font-size: 0.55rem;
-      color: #555;
-      line-height: 1.8;
-      white-space: pre-line;
+    /* Fix for smaller mobile screens */
+    @media (max-width: 400px) {
+      .btn { font-size: 0.65rem; padding: 10px 15px; }
+      h1 { font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -252,7 +199,8 @@
     <!-- VIEW 1: PROPOSAL -->
     <div id="view1">
       <div class="img-frame">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHRsbmtsaHR1NTRsdDF1OHYydHR0YWFjcWZjcndmbTZxd3p3OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/c3Q2EdrCzhFAQL6f84/giphy.gif" alt="Cute Cat">
+        <!-- FIX: Updated with a reliable image link -->
+        <img src="https://media1.tenor.com/m/m1ZELH3N5xUAAAAd/cat-cute.gif" alt="Cute Cat">
       </div>
       <h1>Will you go out with me?</h1>
       <div class="btn-group">
@@ -275,7 +223,8 @@
     <!-- VIEW 3: DATE PICKER -->
     <div id="view3" class="hidden">
       <div class="img-frame">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHRsbmtsaHR1NTRsdDF1OHYydHR0YWFjcWZjcndmbTZxd3p3OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/c3Q2EdrCzhFAQL6f84/giphy.gif" alt="Thinking Cat">
+        <!-- FIX: Updated image link -->
+        <img src="https://media1.tenor.com/m/7aXhW6P0xXkAAAAd/cat-cute.gif" alt="Thinking Cat">
       </div>
       <h1>PICK A DATE</h1>
       <p class="subtitle">Choose the day for our cute little plan:</p>
@@ -298,48 +247,44 @@
         <button class="act-btn" onclick="selectActivity(this, 'MINI GOLF')">MINI GOLF</button>
         <button class="act-btn" onclick="selectActivity(this, 'SURPRISE ME')">SURPRISE ME</button>
       </div>
-      <button class="btn" onclick="submitActivity()">LOCK IT IN -></button>
+      <button class="btn" onclick="submitActivity()">NEXT -></button>
     </div>
 
-    <!-- VIEW 5: FINAL CONFIRMATION -->
+    <!-- VIEW 5: ASK FOR NAME (NEW) -->
     <div id="view5" class="hidden">
-      <button class="notify-btn" onclick="toggleModal(true)">✉ 1 NEW MESSAGE</button>
-      
+      <div class="img-frame">
+        <img src="https://media1.tenor.com/m/kziS-aL_T7QAAAAd/shy-cute.gif" alt="Shy Cat">
+      </div>
+      <h1>Wait, I was too nervous and forgot to ask your name! 🥺</h1>
+      <input type="text" id="nameInput" placeholder="Your name...">
+      <br>
+      <button class="btn" onclick="submitNameAndSend(event)">LOCK IT IN -></button>
+    </div>
+
+    <!-- VIEW 6: FINAL CONFIRMATION -->
+    <div id="view6" class="hidden">
       <div class="img-frame">
         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmFhOWp6OTVsb3FlczM4ZWxveXZxYmJ1OHI4Nm4zaGNldnlua3k4MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw0/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Celebration">
       </div>
       <h1>IT'S A DATE!</h1>
-      
       <div class="details-box">
+        <p><strong>WITH:</strong> <span id="summaryName">-</span></p>
         <p><strong>DATE:</strong> <span id="summaryDate">-</span></p>
         <p><strong>ACTIVITY:</strong> <span id="summaryActivity">-</span></p>
-      </div>
-    </div>
-
-    <!-- LOVE NOTE POPUP MODAL -->
-    <div id="noteModal" class="modal hidden">
-      <div class="modal-header">
-        <span>💌 love_note.txt</span>
-        <button class="close-btn" onclick="toggleModal(false)">X</button>
-      </div>
-      <div class="modal-body">
-you're really cute no matter what. don't let anyone tell you any different, okay?
-
-you make every ordinary day feel special.
-
-today and every day, I celebrate you and us.
-
-xoxo
       </div>
     </div>
 
   </div>
 
   <script>
-    // State Variables
+    // --- PUT YOUR FORMSPREE URL HERE ---
+    const FORMSPREE_URL = "https://formspree.io/f/mjybowqg";
+    // -----------------------------------
+
     let noClickCount = 0;
     let selectedDate = '';
     let selectedActivity = 'SURPRISE ME';
+    let userName = '';
 
     const guiltMessages = [
       "Are you sure?",
@@ -350,21 +295,18 @@ xoxo
       "Heart broken <3"
     ];
 
-    // Navigation Switcher
     function goToView(viewNum) {
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 1; i <= 6; i++) {
         document.getElementById(`view${i}`).classList.add('hidden');
       }
       document.getElementById(`view${viewNum}`).classList.remove('hidden');
     }
 
-    // Logic for growing "YES" button on "No" click
     function handleNoClick() {
       noClickCount++;
       const yesBtn = document.getElementById('yesBtn');
       const subMsg = document.getElementById('subMsg');
 
-      // Exponentially scale up padding and font size of YES button
       const newPaddingVert = 12 + (noClickCount * 6);
       const newPaddingHoriz = 20 + (noClickCount * 10);
       const newFontSize = 0.8 + (noClickCount * 0.25);
@@ -372,48 +314,72 @@ xoxo
       yesBtn.style.padding = `${newPaddingVert}px ${newPaddingHoriz}px`;
       yesBtn.style.fontSize = `${newFontSize}rem`;
 
-      // Update subtitle guilt message
       const msgIndex = Math.min(noClickCount - 1, guiltMessages.length - 1);
       subMsg.textContent = guiltMessages[msgIndex];
     }
 
-    // Capture Date Input
     function submitDate() {
       const dateVal = document.getElementById('dateInput').value;
       if (!dateVal) {
         alert("Please pick a date!");
         return;
       }
-      
       const dateObj = new Date(dateVal);
       const options = { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' };
       selectedDate = dateObj.toLocaleDateString('en-US', options);
-      
       goToView(4);
     }
 
-    // Highlight and store selected activity
     function selectActivity(element, activityName) {
       document.querySelectorAll('.act-btn').forEach(btn => btn.classList.remove('selected'));
       element.classList.add('selected');
       selectedActivity = activityName;
     }
 
-    // Populate summary view
     function submitActivity() {
-      document.getElementById('summaryDate').textContent = selectedDate || 'Tomorrow';
-      document.getElementById('summaryActivity').textContent = selectedActivity;
+      // Go to the name asking view instead of straight to the end
       goToView(5);
     }
 
-    // Toggle Love Note Modal
-    function toggleModal(show) {
-      const modal = document.getElementById('noteModal');
-      if (show) {
-        modal.classList.remove('hidden');
-      } else {
-        modal.classList.add('hidden');
+    async function submitNameAndSend(event) {
+      const nameVal = document.getElementById('nameInput').value.trim();
+      if (!nameVal) {
+        alert("Please tell me your name!");
+        return;
       }
+      userName = nameVal;
+
+      // Update final screen details
+      document.getElementById('summaryName').textContent = userName;
+      document.getElementById('summaryDate').textContent = selectedDate;
+      document.getElementById('summaryActivity').textContent = selectedActivity;
+
+      // Show a temporary loading state on the button
+      const btn = event.target;
+      const originalText = btn.innerText;
+      btn.innerText = "SENDING...";
+      btn.disabled = true;
+
+      // Send the data to Formspree
+      try {
+        await fetch(FORMSPREE_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            Name: userName,
+            Date: selectedDate,
+            Activity: selectedActivity
+          })
+        });
+      } catch (error) {
+        console.error("Email failed to send", error);
+      }
+
+      // Go to final screen
+      goToView(6);
     }
   </script>
 </body>
